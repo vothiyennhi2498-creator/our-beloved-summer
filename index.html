@@ -7,85 +7,120 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f7faf8; color: #333; overflow-x: hidden; position: relative; min-height: 100vh; display: block; }
         
-        /* Hiệu ứng lá cây/hoa hướng dương rơi */
-        .leaf { position: absolute; width: 15px; height: 15px; pointer-events: none; opacity: 0.7; animation: fall linear infinite; z-index: 1; }
+        body { 
+            /* Sử dụng trực tiếp ảnh bg.jpg làm nền toàn bộ trang web */
+            background: url('bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333; 
+            overflow-x: hidden; 
+            position: relative; 
+            min-height: 100vh; 
+            display: block; 
+        }
+        
+        /* Lớp phủ mờ giúp giao diện tươi sáng và dễ đọc chữ hơn trên nền ảnh */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.25);
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* Hiệu ứng lá cây/hoa hướng dương rơi nhẹ nhàng, lãng mạn */
+        .leaf { position: absolute; width: 18px; height: 18px; pointer-events: none; opacity: 0.85; animation: fall linear infinite; z-index: 1; }
         @keyframes fall {
             0% { transform: translateY(-20px) rotate(0deg); left: var(--start-x); }
             100% { transform: translateY(100vh) rotate(360deg); left: var(--end-x); }
         }
 
-        /* Hero Banner */
-        .hero-banner { background: linear-gradient(135deg, #A7D7B5 0%, #FFE8EF 100%); text-align: center; padding: 40px 20px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .hero-banner h1 { font-size: 28px; letter-spacing: 2px; color: #2e593a; margin-bottom: 4px; font-weight: 800; }
-        .hero-banner h2 { font-size: 16px; font-style: italic; color: #555; margin-bottom: 12px; font-weight: 400; }
-        .hero-banner p { font-size: 12px; color: #666; background: rgba(255,255,255,0.6); display: inline-block; padding: 4px 14px; border-radius: 20px; letter-spacing: 1px; }
+        /* Hero Banner trong suốt nhẹ nhàng phối theo style Poster */
+        .hero-banner { text-align: center; padding: 35px 20px; position: relative; z-index: 2; }
+        .hero-banner h1 { font-size: 36px; letter-spacing: 3px; color: #df165f; margin-bottom: 2px; font-weight: 900; text-shadow: 0 2px 4px rgba(255,255,255,0.8); }
+        .hero-banner h2 { font-size: 18px; font-style: italic; color: #6bb02e; margin-bottom: 12px; font-weight: 700; text-shadow: 0 1px 3px rgba(255,255,255,0.8); }
+        .hero-banner p { font-size: 13px; color: #444; background: rgba(255, 255, 255, 0.85); display: inline-block; padding: 6px 16px; border-radius: 20px; letter-spacing: 1px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 
-        /* Container điều khiển */
-        .container { max-width: 450px; margin: 0 auto; padding: 24px 16px; text-align: center; position: relative; z-index: 2; }
-        .input-box { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); margin-bottom: 20px; }
-        .input-box p { font-size: 14px; margin-bottom: 12px; color: #555; }
-        input[type="text"] { width: 100%; padding: 12px 16px; border: 2px solid #E2E8F0; border-radius: 12px; font-size: 15px; outline: none; text-align: center; transition: all 0.3s; margin-bottom: 16px; }
-        input[type="text"]:focus { border-color: #A7D7B5; background-color: #fafffb; }
+        /* Container điều khiển trung tâm */
+        .container { max-width: 450px; margin: 0 auto; padding: 10px 16px 40px 16px; text-align: center; position: relative; z-index: 2; }
         
-        button.btn-draw { width: 100%; background: #A7D7B5; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(167, 215, 181, 0.4); transition: transform 0.2s, background 0.2s; }
-        button.btn-draw:active { transform: scale(0.98); }
+        .input-box { background: rgba(255, 255, 255, 0.92); padding: 24px 20px; border-radius: 20px; box-shadow: 0 8px 32px rgba(223, 22, 95, 0.1); margin-bottom: 20px; border: 2px solid #FFE8EF; }
+        .input-box p { font-size: 15px; margin-bottom: 14px; color: #3f661b; font-weight: 700; }
+        
+        input[type="text"] { width: 100%; padding: 14px 16px; border: 2px solid #A7D7B5; border-radius: 14px; font-size: 16px; outline: none; text-align: center; transition: all 0.3s; margin-bottom: 16px; font-weight: 600; color: #222; }
+        input[type="text"]:focus { border-color: #df165f; background-color: #fffafc; box-shadow: 0 0 10px rgba(223, 22, 95, 0.15); }
+        
+        /* Nút DRAW tươi tắn, rực rỡ màu xanh bơ rạng rỡ */
+        button.btn-draw { width: 100%; background: #6bb02e; color: white; border: none; padding: 15px; border-radius: 14px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(107, 176, 46, 0.4); transition: all 0.2s; letter-spacing: 1px; }
+        button.btn-draw:active { transform: scale(0.97); }
         button.btn-draw:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; }
 
-        /* Gacha Animation Box */
-        .gacha-stage { display: none; margin: 30px auto; width: 150px; height: 150px; position: relative; }
-        .gift-box { width: 100px; height: 100px; background: #FFE8EF; border: 4px solid #A7D7B5; border-radius: 12px; margin: 25px auto; position: relative; }
-        .gift-box::before { content: ''; position: absolute; left: 46px; top: 0; width: 8px; height: 100%; background: #A7D7B5; }
-        .gift-box::after { content: ''; position: absolute; left: 0; top: 46px; width: 100%; height: 8px; background: #A7D7B5; }
-        .gift-lid { position: absolute; top: -12px; left: -4px; width: 108px; height: 20px; background: #FFE8EF; border: 4px solid #A7D7B5; border-radius: 4px; transition: all 0.5s; }
+        /* Sân khấu Bức Thư Gacha (Không còn hộp quà rung lắc xấu xí) */
+        .gacha-stage { display: none; margin: 50px auto; width: 190px; height: 135px; position: relative; perspective: 1000px; }
         
-        /* Hiệu ứng rung và mở nắp hộp */
-        .shake { animation: shakeBox 0.5s infinite; }
-        @keyframes shakeBox {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            20% { transform: translate(-3px, 1px) rotate(-2deg); }
-            40% { transform: translate(3px, -1px) rotate(2deg); }
-            60% { transform: translate(-3px, -1px) rotate(-1deg); }
-            80% { transform: translate(3px, 1px) rotate(1deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
-        }
-        .open-lid .gift-lid { transform: translateY(-40px) rotate(-15deg); opacity: 0; }
+        /* Khung bao bọc bì thư */
+        .envelope { width: 100%; height: 100%; background: #FFE8EF; border: 3px solid #df165f; border-radius: 12px; position: relative; transform-style: preserve-3d; transition: transform 0.3s; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        /* Tạo hình đường cắt lá thư */
+        .envelope::before { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 0; border-left: 92px solid transparent; border-right: 92px solid transparent; border-bottom: 70px solid rgba(223, 22, 95, 0.15); z-index: 3; pointer-events: none; }
+        .envelope::after { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 0; border-left: 92px solid rgba(167, 215, 181, 0.25); border-top: 65px solid transparent; border-bottom: 65px solid transparent; z-index: 3; pointer-events: none; }
 
-        /* Postcard Kết Quả */
-        .result-card { display: none; background: white; border-radius: 20px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: left; position: relative; animation: unfoldCard 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; transform-origin: top; border: 3px solid transparent; }
-        @keyframes unfoldCard {
-            0% { transform: scaleY(0); opacity: 0; }
-            100% { transform: scaleY(1); opacity: 1; }
+        /* Nắp phong bì lãng mạn */
+        .envelope-flap { position: absolute; top: -2px; left: -3px; width: 190px; height: 75px; background: #FFE8EF; border: 3px solid #df165f; border-top: none; clip-path: polygon(0 0, 50% 100%, 100% 0); transform-origin: top center; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); z-index: 4; }
+        
+        /* Dấu niêm phong sáp Wax Seal đóa hướng dương */
+        .wax-seal { position: absolute; top: 52px; left: 77px; width: 36px; height: 36px; background: #df165f; border-radius: 50%; box-shadow: 0 3px 6px rgba(0,0,0,0.2); z-index: 5; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: opacity 0.3s; }
+
+        /* Hiệu ứng nhấp nháy bập bùng nhẹ nhàng chờ đợi (Thay thế hẳn cho rung lắc mạnh) */
+        .pulse-waiting { animation: gentlePulse 1.2s infinite ease-in-out; }
+        @keyframes gentlePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+            100% { transform: scale(1); }
         }
 
-        /* Tone màu theo mùa chỉ định */
+        /* Khi bức thư mở nắp sổ quà ra */
+        .open-envelope .envelope-flap { transform: rotateX(180deg) translateY(2px); z-index: 1; }
+        .open-envelope .wax-seal { opacity: 0; }
+
+        /* Postcard Kết Quả cực đẹp */
+        .result-card { display: none; background: white; border-radius: 24px; padding: 26px; box-shadow: 0 12px 40px rgba(0,0,0,0.15); text-align: left; position: relative; animation: slideOutLetter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.12) forwards; transform-origin: bottom center; border: 3px solid transparent; z-index: 10; }
+        
+        /* Hiệu ứng lá thư trượt bay từ lòng bì thư lên */
+        @keyframes slideOutLetter {
+            0% { transform: translateY(80px) scale(0.3); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        /* Màu nền pastel ngọt ngào cho từng Postcard kết quả */
         .card-spring { background-color: #DDF3E4 !important; border-color: #bce6ca !important; }
         .card-autumn { background-color: #F8D7E3 !important; border-color: #f3bad0 !important; }
         .card-winter { background-color: #EEF7F3 !important; border-color: #d1ebdE !important; }
-        .card-summer { background-color: #FFE8EF !important; border-color: #A7D7B5 !important; }
+        .card-summer { background-color: #FFE8EF !important; border-color: #df165f !important; }
 
-        .letter-title { text-align: center; font-size: 15px; font-weight: bold; color: #444; margin-bottom: 12px; letter-spacing: 0.5px; }
-        .letter-body { font-size: 13px; color: #555; line-height: 1.6; font-style: italic; text-align: center; margin-bottom: 20px; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 16px; }
+        .letter-title { text-align: center; font-size: 16px; font-weight: bold; color: #df165f; margin-bottom: 12px; letter-spacing: 0.5px; }
+        .letter-body { font-size: 13.5px; color: #444; line-height: 1.6; font-style: italic; text-align: center; margin-bottom: 20px; border-bottom: 1px dashed rgba(0,0,0,0.15); padding-bottom: 16px; font-weight: 500; }
         
         .congrats-text { font-size: 13px; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 2px; color: #666; margin-bottom: 4px; }
-        .user-tag { font-size: 20px; font-weight: 800; text-align: center; color: #111; margin-bottom: 16px; }
-        .divider { height: 1px; background: rgba(0,0,0,0.1); margin: 16px 0; }
+        .user-tag { font-size: 22px; font-weight: 800; text-align: center; color: #111; margin-bottom: 16px; }
         
-        .prize-title { font-size: 18px; font-weight: 800; text-align: center; margin-bottom: 16px; color: #2e593a; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .items-list { background: rgba(255,255,255,0.5); padding: 14px; border-radius: 12px; margin-bottom: 16px; }
-        .item-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; color: #444; font-weight: 500; opacity: 0; transform: translateY(10px); animation: fadeInItem 0.4s forwards; }
+        .prize-title { font-size: 19px; font-weight: 800; text-align: center; margin-bottom: 16px; color: #2e593a; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .items-list { background: rgba(255,255,255,0.65); padding: 16px; border-radius: 14px; margin-bottom: 16px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
+        .item-row { display: flex; justify-content: space-between; font-size: 15px; margin-bottom: 10px; color: #333; font-weight: 600; opacity: 0; transform: translateY(10px); animation: fadeInItem 0.4s forwards; }
         .item-row:last-child { margin-bottom: 0; }
         @keyframes fadeInItem { to { opacity: 1; transform: translateY(0); } }
         
-        .quote-box { font-size: 12px; text-align: center; font-style: italic; color: #666; padding: 10px; border-left: 3px solid #A7D7B5; background: rgba(255,255,255,0.3); border-radius: 4px; }
-        .special-badge { background: linear-gradient(45deg, #ffd700, #ffa500); color: white; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; letter-spacing: 1px; display: inline-block; margin-bottom: 6px; }
+        .quote-box { font-size: 12.5px; text-align: center; font-style: italic; color: #555; padding: 12px; border-left: 4px solid #6bb02e; background: rgba(255,255,255,0.4); border-radius: 4px; font-weight: 500; }
+        .special-badge { background: linear-gradient(45deg, #df165f, #ff6b9d); color: white; padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; letter-spacing: 1px; display: inline-block; margin-bottom: 6px; box-shadow: 0 2px 6px rgba(223,22,95,0.3); }
     </style>
 </head>
 <body>
 
+    <!-- Lá cây hoa rơi mùa hè -->
     <div id="leaf-container"></div>
 
+    <!-- Banner chính -->
     <div class="hero-banner">
         <h1>DORAN</h1>
         <h2>Our Beloved Summer</h2>
@@ -93,20 +128,24 @@
     </div>
 
     <div class="container">
+        <!-- Ô nhập tên Threads -->
         <div class="input-box" id="action-box">
-            <p>Nhập username Threads của bạn để mở quà nha 🍃</p>
+            <p>Nhập username Threads của bạn để mở thư nha 🍃</p>
             <input type="text" id="username" placeholder="@yenhi" autocomplete="off">
             <button class="btn-draw" id="draw-btn" onclick="startDraw()">🎁 DRAW</button>
         </div>
 
+        <!-- Sân khấu Bức thư tình đầu mở quà -->
         <div class="gacha-stage" id="gacha-stage">
-            <div class="gift-box shake" id="gift-box">
-                <div class="gift-lid"></div>
+            <div class="envelope pulse-waiting" id="envelope-box">
+                <div class="envelope-flap"></div>
+                <div class="wax-seal">🌻</div>
             </div>
         </div>
 
+        <!-- Postcard lật quà ngọt ngào -->
         <div class="result-card" id="result-card">
-            <div class="letter-title">💌 A Letter for This Summer</div>
+            <div class="letter-title">A Letter for This Summer 💌</div>
             <div class="letter-body">
                 "Thank you for being part of DORAN: Our Beloved Summer. No matter where the four seasons take us, we hope this little gift will remind you of this summer."
             </div>
@@ -116,31 +155,28 @@
             
             <div class="prize-title" id="card-prize-name">🌸 Mùa... Set</div>
             
-            <div class="items-list" id="card-items-list">
-                </div>
+            <div class="items-list" id="card-items-list"></div>
             
-            <div class="quote-box" id="card-quote">
-                "Lời chúc ý nghĩa"
-            </div>
+            <div class="quote-box" id="card-quote">"Lời chúc ý nghĩa"</div>
         </div>
     </div>
 
     <script>
-        // CẤU HÌNH: Dán URL Apps Script ở Bước 1 vào đây
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVMjQk-q69LU4Iy6rn5gC1ZdssiS1Gc4s1RNllpn4OfBdw3e2_1xmJqLT5CQRtpaAx/exec";
+        // CHÚ Ý: Chị nhớ thay link URL Apps Script mới vừa copy ở bước sửa lỗi vào đây nha!
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyaAlHLCpzr9jPdPSkl6ztYirX3aIIYyvOTR4i9LWMlX3B08YnYOB98UsbD4eQ_-Xm1/exec";
 
-        // Tạo hiệu ứng lá rơi tự động
+        // Khởi tạo lá hoa rơi tự động
         const leafContainer = document.getElementById('leaf-container');
         const leaves = ['🍃', '🌻', '🌸', '🌱'];
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 22; i++) {
             const leaf = document.createElement('div');
             leaf.className = 'leaf';
             leaf.innerText = leaves[Math.floor(Math.random() * leaves.length)];
             leaf.style.setProperty('--start-x', Math.random() * 100 + 'vw');
             leaf.style.setProperty('--end-x', Math.random() * 100 + 'vw');
-            leaf.style.animationDuration = (Math.random() * 5 + 5) + 's';
-            leaf.style.animationDelay = (Math.random() * 5) + 's';
-            leaf.style.fontSize = (Math.random() * 10 + 10) + 'px';
+            leaf.style.animationDuration = (Math.random() * 4 + 5) + 's';
+            leaf.style.animationDelay = (Math.random() * 4) + 's';
+            leaf.style.fontSize = (Math.random() * 8 + 12) + 'px';
             leafContainer.appendChild(leaf);
         }
 
@@ -151,16 +187,13 @@
                 return;
             }
             
-            // Khóa giao diện điều khiển
             document.getElementById('draw-btn').disabled = true;
             document.getElementById('username').disabled = true;
             
-            // Hiện hộp quà gacha đang rung
             document.getElementById('action-box').style.display = 'none';
             document.getElementById('gacha-stage').style.display = 'block';
             
             try {
-                // Gọi API lấy quà từ Google Sheets
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     body: JSON.stringify({ username: usernameInput })
@@ -168,26 +201,26 @@
                 const result = await response.json();
                 
                 if (result.status === "success") {
-                    // Đợi hộp rung 1.5 giây cho hồi hộp rồi mở nắp
+                    // Thư sẽ đung đưa nhẹ trong 1 giây để nạp dữ liệu xong
                     setTimeout(() => {
-                        const giftBox = document.getElementById('gift-box');
-                        giftBox.classList.remove('shake');
-                        giftBox.classList.add('open-lid');
+                        const envelopeBox = document.getElementById('envelope-box');
+                        envelopeBox.classList.remove('pulse-waiting');
+                        envelopeBox.classList.add('open-envelope'); // Nắp thư mở lên nhẹ nhàng
                         
-                        // Sau đó 0.8 giây thì mở Card Postcard kết quả ra
+                        // Chờ 0.6 giây nắp mở hẳn, card postcard kết quả sẽ lướt bay lên
                         setTimeout(() => {
                             document.getElementById('gacha-stage').style.display = 'none';
                             showPostcard(usernameInput, result);
-                        }, 800);
+                        }, 600);
                         
-                    }, 1500);
+                    }, 1000);
                 } else {
                     alert(result.message || "Có lỗi xảy ra, chị kiểm tra lại nhé!");
                     resetUI();
                 }
             } catch (error) {
                 console.error(error);
-                alert("Không kết nối được tới Google Sheet rồi ạ!");
+                alert("Không kết nối được tới Google Sheet rồi ạ! Chị nhớ kiểm tra lại quyền truy cập 'Anyone' trong Apps Script và dán đúng link mới vào code nha 🥹");
                 resetUI();
             }
         }
@@ -196,15 +229,12 @@
             const card = document.getElementById('result-card');
             const listContainer = document.getElementById('card-items-list');
             
-            // Reset danh sách vật phẩm cũ
             card.className = "result-card"; 
             listContainer.innerHTML = "";
             
-            // Gán dữ liệu cơ bản
             document.getElementById('card-username').innerText = username;
             document.getElementById('card-quote').innerText = `"${data.quote}"`;
             
-            // Thiết lập giao diện riêng dựa vào mùa trúng
             let seasonClass = "";
             let icon = "🌱";
             let isSpecial = data.setName.includes("Summer");
@@ -224,10 +254,8 @@
                 document.getElementById('card-prize-name').innerText = `${icon} ${data.setName}`;
             }
             
-            // Hiện khung bàicard lên trước
             card.style.display = 'block';
             
-            // Xây dựng danh sách các món quà gacha lật mở tuần tự
             const items = [
                 { name: "📖 Bookmark", qty: data.bookmark },
                 { name: "💌 Postcard", qty: data.postcard },
@@ -237,29 +265,27 @@
                 items.push({ name: `✨ ${data.extra}`, qty: 1, isExtra: true });
             }
             
-            // Tạo hiệu ứng lật (drop-down) từng món cách nhau 0.5 giây giống hệt gacha game
+            // Lật mở từng vật phẩm gacha mượt mà sau khi thư bay lên ổn định
             items.forEach((item, index) => {
                 const row = document.createElement('div');
                 row.className = 'item-row';
-                if(item.isExtra) row.style.color = '#b45309'; // Tạo điểm nhấn màu vàng cho quà phụ đặc biệt
-                row.style.animationDelay = `${index * 0.5}s`;
+                if(item.isExtra) row.style.color = '#df165f'; 
+                row.style.animationDelay = `${(index * 0.4) + 0.6}s`; 
                 row.innerHTML = `<span>${item.name}</span> <span>×${item.qty}</span>`;
                 listContainer.appendChild(row);
             });
             
-            // Kích hoạt pháo hoa Confetti khi bốc xong
+            // Kích hoạt pháo hoa giấy Confetti rạng rỡ
             if (isSpecial) {
-                // Pháo hoa vàng kim rực rỡ cho set Special
-                var duration = 2 * 1000;
+                var duration = 2.5 * 1000;
                 var end = Date.now() + duration;
                 (function frame() {
-                    confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ffd700', '#ffa500', '#ffe8ef'] });
-                    confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ffd700', '#ffa500', '#ffe8ef'] });
+                    confetti({ particleCount: 3, angle: 60, spread: 60, origin: { x: 0 }, colors: ['#df165f', '#ffd700', '#6bb02e'] });
+                    confetti({ particleCount: 3, angle: 120, spread: 60, origin: { x: 1 }, colors: ['#df165f', '#ffd700', '#6bb02e'] });
                     if (Date.now() < end) requestAnimationFrame(frame);
                 }());
             } else {
-                // Pháo hoa sắc màu nhẹ nhàng cho các set thường
-                confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } });
+                confetti({ particleCount: 85, spread: 65, origin: { y: 0.75 } });
             }
         }
 
@@ -268,6 +294,8 @@
             document.getElementById('gacha-stage').style.display = 'none';
             document.getElementById('draw-btn').disabled = false;
             document.getElementById('username').disabled = false;
+            const envelopeBox = document.getElementById('envelope-box');
+            envelopeBox.className = "envelope pulse-waiting";
         }
     </script>
 </body>
